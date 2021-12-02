@@ -22,7 +22,7 @@ const Tab = createBottomTabNavigator()
 
 const Root = () => {
   const isLogged = useSelector(s => s.api.isLogged)
-  const newNotifications = useSelector(s => s.api.newNotifications)
+  const newNotifications = useSelector(s => s.api.loggedPerson.newNotifications)
 
   const [loaded, setLoaded] = useState(false)
 

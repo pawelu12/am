@@ -5,10 +5,11 @@ import { StatusBar } from 'expo-status-bar'
 import { NativeBaseProvider } from 'native-base'
 
 import Root from './comps/Root'
+import { colors } from './api/styles'
 
 const App = () => (
   <Provider store={store}>
-    <StatusBar barStyle="light-content" backgroundColor="violet" />
+    <StatusBar barStyle="light-content" backgroundColor={colors().backgroundColor} />
     <NativeBaseProvider>
       <Root />
     </NativeBaseProvider>
