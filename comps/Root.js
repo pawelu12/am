@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { Text, View } from 'react-native'
+import { Alert } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { Box, Center, Heading, Spinner } from 'native-base'
+import { Box, Center, Heading, Pressable, Spinner } from 'native-base'
 import { vh, vw } from 'react-native-css-vh-vw'
 
 import HomeScreen from '../screens/HomeScreen'
-import OptionsScreen from '../screens/OptionsScreen'
-import { AntDesign, FontAwesome5, Ionicons, SimpleLineIcons } from '@expo/vector-icons'
-import ProductsScreen from '../screens/ProductsScreen'
+import { FontAwesome5, Ionicons, SimpleLineIcons } from '@expo/vector-icons'
 import UserScreen from '../screens/UserScreen'
 import SignPanel from '../screens/SignPanel'
 import { navStyle } from '../api/styles'
@@ -17,6 +15,7 @@ import { apiName } from '../api/config'
 import NewProductScreen from '../screens/NewProductScreen'
 import FavouriteProducts from '../screens/FavouriteProducts'
 import { colors } from '../api/styles'
+import ProductsList from './ProductsList'
 
 const Tab = createBottomTabNavigator()
 
@@ -55,7 +54,7 @@ const Root = () => {
               else if(route.name === 'Products')
                 return <Ionicons name={focused ? 'search' : 'search-outline'} size={size} color={color} />
               else if(route.name === 'NewProduct')
-                return <Ionicons name={focused ? 'add-circle' : 'add-circle-outline'} size={size+8} color={color} />
+                return <Ionicons name={focused ? 'add-circle' : 'add-circle-outline'} size={size+18} color={color} />
               else if(route.name === 'FavouriteProducts')
                 return <Ionicons name={focused ? 'heart' : 'heart-outline'} size={size} color={color} />
             }
@@ -63,7 +62,10 @@ const Root = () => {
         >
           <Tab.Screen
             name="Products"
-            component={ProductsScreen}
+            component={ProductsList}
+            options={{
+              headerRight: () => <Pressable style={{ marginRight: 10 }} onPress={() => Alert.alert("wyszukiwarka po kodzie")}><Ionicons name="barcode-outline" color="white" size={32} /></Pressable>
+            }}
           />
           <Tab.Screen
             name="Home"

@@ -1,13 +1,17 @@
 import React from 'react'
-import { Text, View } from 'react-native'
+import ProductsList from '../comps/ProductsList'
 
-const ProductsScreen = () => {
+import { createStackNavigator } from '@react-navigation/stack'
 
-  return (
-    <View>
-      <Text> !PRODUCTS SCREEN!</Text>
-    </View>
-  )
-}
+const Stack = createStackNavigator()
+
+const ProductsScreen = ({ navigation }) => (
+  <Stack.Navigator
+    screenOptions={{ headerShown: false }}
+    initialRouteName="ProductList"
+  >
+    <Stack.Screen name="ProductList" component={ProductsList} />
+  </Stack.Navigator>
+)
 
 export default ProductsScreen

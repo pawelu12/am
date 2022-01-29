@@ -11,7 +11,7 @@ const UserScreen = () => {
     return (
       <View>
         <Text>
-          !USER SCREEN!
+          Dane o użytkowniku
         </Text>
       </View>
     )

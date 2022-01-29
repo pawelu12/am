@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Box, Button, Center, Input } from 'native-base'
+import { Box, Button, Center, Input, Toast, useToast } from 'native-base'
 import { vw, vh } from 'react-native-css-vh-vw'
 import { colors } from '../api/styles'
 import { Text } from 'native-base'
@@ -33,26 +33,39 @@ const SignPanel = ({ navigation }) => {
   const [errors, setErrors] = useState({ login: false, pass: false, pass2: false })
 
   const dispatch = useDispatch()
+  const toast = useToast()
+  const toastContent = reg => {
+    const title = `Błąd ${reg ? 'rejestracji' : 'logowania'}`
+    return {
+      title,
+      status: 'error',
+      description: 'Proszę sprawdzić dane i spróbować ponownie'
+    }
+  }
 
   const isLogged = useSelector(s => s.api.isLogged)
 
   const signIn = () => {
     dispatch(signInApi({ login, pass }))
-    if(!isLogged)
+    if(login !== 'admin' || pass !== 'admin') {
       setErrors({
         login: login.trim().length < 5 ? true : false,
         pass: pass.trim().length < 5 ? true : pass !== 'admin' ? true : false
       })
+      toast.show(toastContent(false))
+    }
   }
 
   const signUp = () => {
     dispatch(signUpApi({ login, pass, pass2 }))
-    if(!isLogged)
+    if(login === 'admin' || pass != pass2) {
       setErrors({
         login: login.trim().length === 0 ? true : login.trim() === 'admin' ? true : false,
         pass: pass.trim().length < 5 ? true : false,
         pass2: pass2.trim().length < 5 ? true : pass2 !== pass ? true : false
       })
+      toast.show(toastContent(true))
+    }
   }
 
   return (
