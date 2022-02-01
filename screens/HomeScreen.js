@@ -2,10 +2,10 @@ import React from 'react'
 import { SliderBox } from 'react-native-image-slider-box'
 import { colors } from '../api/styles'
 import { vw, vh } from 'react-native-css-vh-vw'
-import { Box, Text } from 'native-base'
+import { Box, ScrollView, Text } from 'native-base'
 
 const HomeScreen = () => (
-  <Box
+  <ScrollView
     style={{
       width: vw(100),
       height: vh(100)
@@ -49,7 +49,7 @@ const HomeScreen = () => (
     >
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. In nulla posuere sollicitudin aliquam ultrices sagittis orci a scelerisque. Nunc sed id semper risus in hendrerit gravida rutrum. Risus feugiat in ante metus dictum at tempor commodo ullamcorper. Tempor id eu nisl nunc mi ipsum faucibus vitae. Eu facilisis sed odio morbi quis commodo. Enim lobortis scelerisque fermentum dui faucibus in ornare. Ac tortor vitae purus faucibus. Tincidunt dui ut ornare lectus. Et netus et malesuada fames ac turpis.
     </Text>
-  </Box>
+  </ScrollView>
 )
 
 export default HomeScreen
