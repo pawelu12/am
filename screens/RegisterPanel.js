@@ -3,22 +3,24 @@ import { Box, Button, Center, Icon, Input, Toast, useToast } from 'native-base'
 import { vw, vh } from 'react-native-css-vh-vw'
 import { colors } from '../api/styles'
 import { Text } from 'native-base'
-import { useDispatch, useSelector } from 'react-redux'
-import LoginInput from '../comps/LoginInput'
-import { signIn as signInApi, signUp as signUpApi } from '../app/slices/apiSlice'
-import { MaterialIcons } from '@expo/vector-icons'
-import { fetchData } from '../api/actions'
+import { useDispatch, } from 'react-redux'
 
-const SignPanel = ({ navigation }) => {
+import { signUp as signUpApi } from '../app/slices/apiSlice'
+import LoginInput from '../comps/LoginInput'
+
+
+const RegisterPanel = ({ navigation }) => {
   const [login, setLogin] = useState("")
   const [pass, setPass] = useState("")
+  const [pass2, setPass2] = useState("")
+
 
   const [errors, setErrors] = useState({ login: false, pass: false, pass2: false })
 
   const dispatch = useDispatch()
   const toast = useToast()
   const toastContent = reg => {
-    const title = `Błąd logowania'}`
+    const title = `Błąd rejestracji'}`
     return {
       title,
       status: 'error',
@@ -26,17 +28,15 @@ const SignPanel = ({ navigation }) => {
     }
   }
 
-  const isLogged = useSelector(s => s.api.isLogged)
-
-  const signIn = () => {
-    fetchData(`user/signin/${login}/${pass}`)
-    dispatch(signInApi({ login, pass }))
-    if (login !== 'admin' || pass !== 'admin') {
+  const signUp = () => {
+    dispatch(signUpApi({ login, pass, pass2 }))
+    if (login === 'admin' || pass != pass2) {
       setErrors({
-        login: login.trim().length < 5 ? true : false,
-        pass: pass.trim().length < 5 ? true : pass !== 'admin' ? true : false
+        login: login.trim().length === 0 ? true : login.trim() === 'admin' ? true : false,
+        pass: pass.trim().length < 5 ? true : false,
+        pass2: pass2.trim().length < 5 ? true : pass2 !== pass ? true : false
       })
-      toast.show(toastContent(false))
+      toast.show(toastContent(true))
     }
   }
 
@@ -48,6 +48,7 @@ const SignPanel = ({ navigation }) => {
       >
         <LoginInput placeholder="Login" onChangeText={setLogin} error={errors.login} />
         <LoginInput placeholder="Hasło" pass onChangeText={setPass} error={errors.pass} />
+        <LoginInput placeholder="Powtórz hasło" pass onChangeText={setPass2} error={errors.pass2} />
         <Button
           style={{
             width: vw(75),
@@ -55,7 +56,7 @@ const SignPanel = ({ navigation }) => {
             height: 55,
             backgroundColor: colors().backgroundColor,
           }}
-          onPress={() => signIn()}
+          onPress={() => signUp()}
         >
           <Text
             style={{
@@ -64,23 +65,12 @@ const SignPanel = ({ navigation }) => {
               fontWeight: 'bold'
             }}
           >
-            Zaloguj
+            Zarejestruj
           </Text>
         </Button>
-        <Text
-          style={{
-            fontSize: 18,
-            marginTop: 10,
-            color: colors().backgroundColor,
-            fontWeight: 'bold'
-          }}
-          onPress={() => navigation.navigate('RegisterPanel')}
-        >
-          Zarejestruj
-        </Text>
       </Center>
     </Box>
   )
 }
 
-export default SignPanel
+export default RegisterPanel
