@@ -1,24 +1,22 @@
 import { Ionicons } from '@expo/vector-icons'
-import { Box, Text, HStack, Icon, Image, Input, VStack, Toast, Pressable, View } from 'native-base'
+import { Box, Text, HStack, Icon, Image, Input, VStack, Toast, Pressable } from 'native-base'
 import React, { useState } from 'react'
 import { colors } from '../api/styles'
 import { useSelector } from 'react-redux'
 import { vw } from 'react-native-css-vh-vw'
 import { TouchableWithoutFeedback } from 'react-native'
-import { Alert } from 'react-native'
-
 
 const ProductsList = ({ navigation }) => {
   const products = useSelector(s => s.product.products)
-  const [filterProducts, setFilterProducts] = useState(products)
-  const [filter, setFilter] = useState('')
+  const [ filterProducts, setFilterProducts] = useState(products)
+  const [ filter, setFilter ] = useState('')
 
   const searchProducts = () => {
     let newFilterProducts = []
 
-    if (filter !== '') {
-      for (const el of products)
-        if (el.name.includes(filter))
+    if(filter !== '') {
+      for(const el of products)
+        if(el.name.includes(filter))
           newFilterProducts.push(el)
     }
     else
@@ -31,11 +29,7 @@ const ProductsList = ({ navigation }) => {
     <Box>
       <Input
         w={{ base: '100%', md: "30%" }}
-        InputRightElement={
-          <><Icon as={<Ionicons name="search-outline" />} size={35} ml="3" />
-            <Pressable style={{ marginRight: 10 }} onPress={() => Alert.alert("wyszukiwarka po kodzie")}><Ionicons name="barcode-outline" color="black" size={32} /></Pressable>
-          </>
-        }
+        InputRightElement= {<Icon as={<Ionicons name="search-outline" />} size={35} ml="3" style={{ marginRight: 15 }} />}
         style={{ borderColor: colors().backgroundColor, fontSize: 24, paddingLeft: 15 }}
         placeholder="Wyszukaj.."
         onChangeText={setFilter}
@@ -50,7 +44,7 @@ const ProductsList = ({ navigation }) => {
                 source={{ uri: el.photo }}
                 alt={el.name}
                 resizeMode={"contain"}
-                style={{ marginLeft: 5 }}
+                style={{ marginLeft: 5}}
               />
               <Box>
                 <Text style={{ marginTop: el.name.length > 60 ? 0 : 10, width: vw(80) }}>{el.name}</Text>

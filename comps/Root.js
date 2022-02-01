@@ -6,10 +6,15 @@ import { Box, Center, Heading, Spinner } from 'native-base'
 import { vh, vw } from 'react-native-css-vh-vw'
 
 import { colors } from '../api/styles'
-import DrawerNavigator from '../navigation/drawer/'
+import { createDrawerNavigator } from '@react-navigation/drawer'
+import DrawerNav from './Drawer'
 
+const Tab = createBottomTabNavigator()
+const Drawer = createDrawerNavigator()
 
 const Root = () => {
+  const isLogged = useSelector(s => s.api.isLogged)
+  const newNotifications = useSelector(s => s.api.loggedPerson.newNotifications)
 
   const [loaded, setLoaded] = useState(false)
 
@@ -17,10 +22,10 @@ const Root = () => {
     setTimeout(() => setLoaded(true), 2000)
   }, [])
 
-  if (loaded)
+  if(loaded)
     return (
       <NavigationContainer>
-        <DrawerNavigator />
+        <DrawerNav />
       </NavigationContainer>
     )
   else
