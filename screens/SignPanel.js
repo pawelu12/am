@@ -1,29 +1,38 @@
 import React, { useState } from 'react'
-import { Box, Button, Center, Input, Toast, useToast } from 'native-base'
+import { Box, Button, Center, Icon, Input, Toast, useToast } from 'native-base'
 import { vw, vh } from 'react-native-css-vh-vw'
 import { colors } from '../api/styles'
 import { Text } from 'native-base'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { signIn as signInApi, signUp as signUpApi } from '../app/slices/apiSlice'
+import { MaterialIcons } from '@expo/vector-icons'
+import { fetchData } from '../api/actions'
 
-export const LoginInput = ({ placeholder, hide, onChangeText, error }) => (
-  <Input
-    placeholder={placeholder}
-    w={{
-      base: '75%',
-      md: '25%'
-    }}
-    fontSize={18}
-    type={hide ? 'password' : 'text'}
-    style={{ 
-      marginBottom: 8, 
-      borderColor: colors().backgroundColor,
-      backgroundColor: error ? '#ffdddd' : 'transparent'
-    }}
-    onChangeText={onChangeText}
-  />
-)
+export const LoginInput = ({ placeholder, onChangeText, error, pass }) => {
+  const [hide, setHide] = useState(true)
+
+  return (
+    <Input
+      placeholder={placeholder}
+      w={{
+        base: '75%',
+        md: '25%'
+      }}
+      variant="underlined"
+      fontSize={18}
+      type={!pass ? 'text' : hide ? 'password' : 'text'}
+      style={{ 
+        marginBottom: 8, 
+        borderColor: colors().backgroundColor,
+        backgroundColor: error ? '#ffdddd' : 'transparent'
+      }}
+      onChangeText={onChangeText}
+      InputLeftElement={!pass && <Icon as={<MaterialIcons name="person" />} size={5} ml="2" color="gray" />}
+      InputRightElement={pass && <Icon as={<MaterialIcons onPress={() => setHide(!hide)} name={hide ? "visibility-off" : "visibility"} />} size={5} mr="2" color="gray" />}
+    />
+  )
+}
 
 const SignPanel = ({ navigation }) => {
   const [login, setLogin] = useState("")
@@ -46,6 +55,7 @@ const SignPanel = ({ navigation }) => {
   const isLogged = useSelector(s => s.api.isLogged)
 
   const signIn = () => {
+    fetchData(`user/signin/${login}/${pass}`)
     dispatch(signInApi({ login, pass }))
     if(login !== 'admin' || pass !== 'admin') {
       setErrors({
@@ -75,8 +85,8 @@ const SignPanel = ({ navigation }) => {
         height={vh(60)}
       >
         <LoginInput placeholder="Login" onChangeText={setLogin} error={errors.login} />
-        <LoginInput placeholder="Hasło" hide onChangeText={setPass} error={errors.pass} />
-        <LoginInput placeholder="Powtórz hasło (rejestracja)" hide onChangeText={setPass2} error={errors.pass2} />
+        <LoginInput placeholder="Hasło" pass onChangeText={setPass} error={errors.pass} />
+        <LoginInput placeholder="Powtórz hasło (rejestracja)" pass onChangeText={setPass2} error={errors.pass2} />
         <Button
           style={{
             width: vw(75),
