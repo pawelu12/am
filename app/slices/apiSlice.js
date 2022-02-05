@@ -3,6 +3,9 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
   isLogged: false,
   theme: 'light',
+  scanner: false,
+  barcode: '',
+  scanned: false,
   loggedPerson: {
     login: null,
     notifications: {},
@@ -31,10 +34,27 @@ export const apiSlice = createSlice({
     signOut: (state, action) => {
       state.loggedPerson.login = null
       state.isLogged = false
+    },
+    toggleScanner: state => {
+      if(state.scanner === false) {
+        state.scanned = false
+        state.barcode = ''
+      }
+      state.scanner = !state.scanner
+    },
+    setBarcode: (state, action) => {
+      if(action.payload !== ' ') {
+        state.barcode = action.payload
+        scanned = true
+      }
+      else {
+        state.barcode = ''
+        scanned = false
+      }
     }
   }
 })
 
-export const { signIn, signOut, signUp } = apiSlice.actions
+export const { signIn, signOut, signUp, toggleScanner, setBarcode } = apiSlice.actions
 
 export default apiSlice.reducer
